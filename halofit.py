@@ -12,6 +12,16 @@ class halofit:
         self.cosmo = cosmo_util()
     
     def set_cosmology(self, cosmo_dict):
+        """
+        input dict of
+            Omega_de0
+            Omega_K0
+            w0
+            wa
+            h
+        Omega_m0 is computed internally as
+            Omega_m0 = 1.0 - Omega_de0 - Omega_K0
+        """
         self.cosmo.set_cosmology(cosmo_dict)
 
     def set_pklin(self, k, pklin, z, unit='h/Mpc'):
@@ -67,7 +77,7 @@ class halofit:
         self._compute_coeffs(self.z)
 
         y = self.k * self.R_sigma
-        f = y/4. + y/8.
+        f = y/4. + y**2/8.
         Omz = self.cosmo.Omega_m(self.z)
         f1, f2, f3 = Omz**-0.0307, Omz**-0.0585, Omz**0.0743
         Delta_Q = self.Delta_L * ((1.+self.Delta_L)**self.betan)/(1.+self.alphan*self.Delta_L) * np.exp(-f)
@@ -86,6 +96,16 @@ class cosmo_util:
         self.set_cosmology(cosmo_dict)
 
     def set_cosmology(self, cosmo_dict):
+        """
+        input dict of
+            Omega_de0
+            Omega_K0
+            w0
+            wa
+            h
+        Omega_m0 is computed internally as
+            Omega_m0 = 1.0 - Omega_de0 - Omega_K0
+        """
         self.Omega_de0 = cosmo_dict['Omega_de0']
         self.Omega_K0 = cosmo_dict['Omega_K0']
         self.w0 = cosmo_dict['w0']
