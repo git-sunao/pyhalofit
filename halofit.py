@@ -8,23 +8,41 @@ from scipy.optimize import fsolve
 # DOI : 10.1088/0004-637X/761/2/152
 
 class halofit:
+    """halofit class
+
+    This is the class of halofit, which is the fitting formula developed in Takahashi et al. (2012)
+
+    """
     def __init__(self):
         self.cosmo = cosmo_util()
     
     def set_cosmology(self, cosmo_dict):
-        """
-        input dict of
-            Omega_de0
-            Omega_K0
-            w0
-            wa
-            h
-        Omega_m0 is computed internally as
-            Omega_m0 = 1.0 - Omega_de0 - Omega_K0
+        """Settig cosmological parameters
+
+        Parameters
+        ----------
+            cosmo_dict : dict
+                dictionary of cosmological parameters.
+                cosmo_dict needs to include, Omega_de0, Omega_K0, w0, wa, h.
+                Omega_m0 is computed internally by Omega_m0 = 1.0 - Omega_de0 - Omega_K0
         """
         self.cosmo.set_cosmology(cosmo_dict)
 
     def set_pklin(self, k, pklin, z, unit='h/Mpc'):
+        """Setting Fourier mode and linear matter power spectrum at desired redshift.
+
+        Parameters
+        ----------
+            k : array_like
+                Array of Fourier modes
+            pklin : array_like
+                Array of linear matter power spectrum at redshift z
+            z : float
+                Cosmological redshift
+            unit : string
+                Unit of Fourier mode. '/Mpc' and 'h/Mpc' are available.
+                Default is 'h/Mpc'.
+        """
         if unit == 'h/Mpc':
             self.k, self.pklin = k * self.cosmo.h, pklin / self.cosmo.h**3
         elif unit == '/Mpc':
@@ -34,6 +52,14 @@ class halofit:
         self.Delta_L = self.pklin*self.k**3/(2.*np.pi**2)
     
     def sigma(self, R):
+        """Computing the variance of linear matter power spectrum.
+
+        Parameters
+        ----------
+            R : float
+                Smoothing scale to compute the variance of linear power spectrum.
+                If R=8, sigma_8 is computed.
+        """
         return integrate.simps(self.Delta_L*np.exp(-(self.k*R)**2), np.log(self.k))
 
     def _compute_R_sigma(self, z):
@@ -72,6 +98,14 @@ class halofit:
         self.nun    = 10.**(5.2105 + 3.6902*neff)
 
     def get_pkhalo(self):
+        """Getting halofit power spectrum.
+
+        Returns
+        -------
+            pkhalo : array_like
+                halofit power spectrum.
+
+        """
         self._compute_R_sigma(self.z)
         self._compute_neff_C()
         self._compute_coeffs(self.z)
@@ -90,21 +124,30 @@ class halofit:
             return pkhalo
 
 class cosmo_util:
+    """parser class for cosmological parameters
+    """
     def __init__(self, cosmo_dict=None):
+        """
+
+        Parameters
+        ----------
+            cosmo_dict : dict
+                dictionary of cosmological parameters
+
+        """
         if cosmo_dict is None:
             cosmo_dict = {"Omega_de0":0.6844, "Omega_K0":0.0,"w0":-1.0,"wa":0.0,'h':0.6774}
         self.set_cosmology(cosmo_dict)
 
     def set_cosmology(self, cosmo_dict):
-        """
-        input dict of
-            Omega_de0
-            Omega_K0
-            w0
-            wa
-            h
-        Omega_m0 is computed internally as
-            Omega_m0 = 1.0 - Omega_de0 - Omega_K0
+        """Settig cosmological parameters
+
+        Parameters
+        ----------
+            cosmo_dict : dict
+                dictionary of cosmological parameters.
+                cosmo_dict needs to include, Omega_de0, Omega_K0, w0, wa, h.
+                Omega_m0 is computed internally by Omega_m0 = 1.0 - Omega_de0 - Omega_K0
         """
         self.Omega_de0 = cosmo_dict['Omega_de0']
         self.Omega_K0 = cosmo_dict['Omega_K0']
@@ -114,21 +157,29 @@ class cosmo_util:
         self.Omega_m0 = 1.0 - self.Omega_de0 - self.Omega_K0
 
     def Omega_de(self, z):
+        """Returns dark energy density parameter at redshift z.
+        """
         de = self.de_func(z)
         a = 1./(1.+z)
         return self.Omega_de0*de / (self.Omega_m0/a**3 + self.Omega_K0/a**2 + self.Omega_de0*de)
     
     def Omega_m(self, z):
+        """Returns matter density parameter at redshift z.
+        """
         de = self.de_func(z)
         a = 1./(1.+z)
         return self.Omega_m0/a**3 / (self.Omega_m0/a**3 + self.Omega_K0/a**2 + self.Omega_de0*de)
 
     def Omega_K(self, z):
+        """Returns curvature parameter at redshift z.
+        """
         de = self.de_func(z)
         a = 1./(1.+z)
         return self.Omega_K0/a**2  / (self.Omega_m0/a**3 + self.Omega_K0/a**2 + self.Omega_de0*de)
 
     def de_func(self, z):
+        """Returns dark energy scaling at redshift z.
+        """
         w0, wa = self.w0, self.wa
         a = 1./(1.+z)
         return a**(-3.0*(1.+w0+wa)) * np.exp(-3.0*wa*(1.-a))
