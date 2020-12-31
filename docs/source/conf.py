@@ -31,7 +31,7 @@ extensions = ['sphinx.ext.autodoc', 'sphinx.ext.napoleon', # for docstring in co
                 'sphinx_rtd_theme',
                 'sphinx.ext.autosummary',
                 'sphinx.ext.githubpages']
-
+                
 autosummary_generate = True
 
 # Add any paths that contain templates here, relative to this directory.
