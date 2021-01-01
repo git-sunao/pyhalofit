@@ -11,7 +11,7 @@ which is calibrated with :math:`N`-body simulation in Takahashi et al., 2012,
 `DOI:10.1088/0004-637X/761/2/152 <https://arxiv.org/ct?url=https%3A%2F%2Fdx.doi.org%2F10.1088%2F0004-637X%2F761%2F2%2F152&v=9fcbea96>`_
 (`preprint <https://arxiv.org/abs/1208.2701>`_).
 
-See the `pyhalofit python example notebook <../../pyhalofit_example.html>`_ for an introductory set of examples of how to use the pyhalofit package.
+See the pyhalofit python example notebook :doc:`pyhalofit_example` for an introductory set of examples of how to use the pyhalofit package.
 This is usually the fastest way to learn how to use it and quickly see some of the capabilities.
    
 
@@ -25,6 +25,7 @@ Dependencies
    :caption: Contents:
 
    pyhalofit
+   pyhalofit_example
 
 Indices and tables
 ==================
