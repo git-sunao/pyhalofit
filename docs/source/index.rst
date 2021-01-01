@@ -14,7 +14,6 @@ which is calibrated with :math:`N`-body simulation in Takahashi et al., 2012,
 See aaa for an introductory set of examples of how to use the pyhalofit package.
 This is usually the fastest way to learn how to use it and quickly see some of the capabilities.
    
-
 Dependencies
 ============
 - scipy
