@@ -25,7 +25,6 @@ Dependencies
    :caption: Contents:
 
    pyhalofit
-   pyhalofit_example
 
 Indices and tables
 ==================
