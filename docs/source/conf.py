@@ -32,7 +32,7 @@ extensions = ['sphinx.ext.autodoc', 'sphinx.ext.napoleon', # for docstring in co
                 'sphinx_rtd_theme',
                 'sphinx.ext.autosummary',
                 'sphinx.ext.githubpages',
-                'sphinx.ext.autosectionlabel', 'nbsphinx']
+                'sphinx.ext.autosectionlabel']
                 
 autosummary_generate = True
 
