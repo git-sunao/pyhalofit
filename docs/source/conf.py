@@ -30,8 +30,6 @@ author = 'Sunao Sugiyama'
 extensions = ['sphinx.ext.autodoc', 'sphinx.ext.napoleon', # for docstring in codes
                 'sphinx_rtd_theme',
                 'sphinx.ext.autosectionlabel']
-                
-autosummary_generate = True
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
