@@ -13,6 +13,7 @@
 import os
 import sys
 import sphinx_rtd_theme
+sys.path.insert(0, os.path.abspath('..'))
 sys.path.insert(0, os.path.abspath('../..'))
 
 # -- Project information -----------------------------------------------------
@@ -31,7 +32,7 @@ extensions = ['sphinx.ext.autodoc', 'sphinx.ext.napoleon', # for docstring in co
                 'sphinx_rtd_theme',
                 'sphinx.ext.autosummary',
                 'sphinx.ext.githubpages',
-                'sphinx.ext.autosectionlabel']
+                'sphinx.ext.autosectionlabel', 'nbsphinx']
                 
 autosummary_generate = True
 
