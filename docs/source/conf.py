@@ -17,7 +17,7 @@ sys.path.insert(0, os.path.abspath('../..'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'DarkEmulator'
+project = 'pyhalofit'
 copyright = '2021, Sunao Sugiyama'
 author = 'Sunao Sugiyama'
 
@@ -30,7 +30,8 @@ author = 'Sunao Sugiyama'
 extensions = ['sphinx.ext.autodoc', 'sphinx.ext.napoleon', # for docstring in codes
                 'sphinx_rtd_theme',
                 'sphinx.ext.autosummary',
-                'sphinx.ext.githubpages']
+                'sphinx.ext.githubpages',
+                'sphinx.ext.autosectionlabel']
                 
 autosummary_generate = True
 
