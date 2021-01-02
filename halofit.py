@@ -1,8 +1,8 @@
-#import numpy as np
-#from scipy.interpolate import InterpolatedUnivariateSpline as ius
-#from scipy import integrate
-#from scipy.optimize import fsolve
-#from astropy.cosmology import w0waCDM
+import numpy as np
+from scipy.interpolate import InterpolatedUnivariateSpline as ius
+from scipy import integrate
+from scipy.optimize import fsolve
+from astropy.cosmology import w0waCDM
 
 # Original paper : Takahashi et al. (2012)
 # https://arxiv.org/abs/1208.2701
