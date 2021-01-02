@@ -23,7 +23,7 @@ Dependencies
    :maxdepth: 1
    :caption: Contents:
 
-   modules
+   pyhalofit
    pyhalofit_example
 
 Indices and tables
