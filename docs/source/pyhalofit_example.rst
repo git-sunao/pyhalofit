@@ -31,7 +31,7 @@ Pyhalofit example notebook
 
 
 
-.. image:: output_2_1.png
+.. image:: pyhalofit_example_files/pyhalofit_example_2_1.png
 
 
 Basic usage of pyhalofit
@@ -56,7 +56,7 @@ Basic usage of pyhalofit
 
 
 
-.. image:: output_5_0.png
+.. image:: pyhalofit_example_files/pyhalofit_example_5_0.png
 
 
 Tips

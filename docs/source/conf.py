@@ -31,7 +31,7 @@ extensions = ['sphinx.ext.autodoc', 'sphinx.ext.napoleon', # for docstring in co
                 'sphinx_rtd_theme',
                 'sphinx.ext.autosectionlabel']
 
-autodoc_mock_imports = ['numpy', 'scipy', 'astropy']
+autodoc_mock_imports = ['numpy', 'scipy', 'astropy'] # avoid import error
 
 # Napoleon settings
 napoleon_google_docstring = True
