@@ -7,7 +7,15 @@ try:
 except ImportError:
     from distutils.core import setup
 
-requires = ['scipy>=1.1.0', 'astropy>=3.2.3']
+def get_long_description():
+    with open(os.path.join('docs/source', 'README_pypi.rst')) as f:
+        return f.read()
+
+def get_requirements():
+    fname = os.path.join(os.path.dirname(__file__), 'requirements.txt')
+    with open(fname, 'r') as f:
+        requirements = [line.rstrip() for line in f]
+    return requirements
 
 def find(what='version'):
     f = open(os.path.join(os.path.dirname(__file__), 'pyhalofit/__init__.py')).read()
@@ -16,15 +24,17 @@ def find(what='version'):
         return match.group(1)
     raise RuntimeError("Unable to find %s string."%what)
 
+
 setup(
     name='pyhalofit',
     version=find('version'),
     description='pyhalofit package',
+    long_description='pyhalofit',#get_long_description(),
     url=find('url'),
     author=find('author'),
     author_email='sunao.sugiyama@ipmu.jp',
     keywords=['cosmology', 'large scale structure', 'halofit'],
     packages=['pyhalofit'],
-    install_requires=requires,
+    install_requires=get_requirements(),
     classifiers=['Programming Language :: Python :: 3.6'],
 )
