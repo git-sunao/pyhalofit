@@ -30,6 +30,7 @@ Dependencies
 
    pyhalofit
    pyhalofit_example
+   README_pypi
 
 Indices and tables
 ==================
