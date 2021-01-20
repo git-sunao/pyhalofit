@@ -8,7 +8,7 @@ except ImportError:
     from distutils.core import setup
 
 def get_long_description():
-    with open(os.path.join('docs/source', 'README_pypi.rst')) as f:
+    with open('README.rst') as f:
         return f.read()
 
 def get_requirements():
@@ -23,7 +23,6 @@ def find(what='version'):
     if match:
         return match.group(1)
     raise RuntimeError("Unable to find %s string."%what)
-
 
 setup(
     name='pyhalofit',
