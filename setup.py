@@ -29,7 +29,7 @@ setup(
     name='pyhalofit',
     version=find('version'),
     description='pyhalofit package',
-    long_description='pyhalofit',#get_long_description(),
+    long_description=get_long_description(),
     url=find('url'),
     author=find('author'),
     author_email='sunao.sugiyama@ipmu.jp',
