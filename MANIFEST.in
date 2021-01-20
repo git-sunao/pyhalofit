@@ -1,4 +1,4 @@
 include requirements.txt
 include docs/data
 include docs/pyhalofit_example.ipynb
-include docs/README_pypi.rst
+include docs/source/README_pypi.rst
