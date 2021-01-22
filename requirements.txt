@@ -1,2 +1,2 @@
 scipy
-#astropy>=3.2.3
+astropy>=3.2.3
