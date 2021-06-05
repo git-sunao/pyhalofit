@@ -109,7 +109,7 @@ class halofit:
         def eq(R):
             return self.sigma(R) - 1.0
         
-        self.R_sigma = fsolve(eq, [1./k_sigma])
+        self.R_sigma = abs(fsolve(eq, [1./k_sigma]))
     
     def _compute_neff_C(self, h=1e-4):
         lnR_0 = np.log(self.R_sigma)
