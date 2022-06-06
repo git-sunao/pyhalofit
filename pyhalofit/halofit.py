@@ -149,16 +149,76 @@ class halofit:
         self._compute_R_sigma(self.z)
         self._compute_neff_C()
         self._compute_coeffs(self.z)
-
-        y = self.k * self.R_sigma
-        f = y/4. + y**2/8.
         Omz = self.cosmo.Om(self.z)
-        f1, f2, f3 = Omz**-0.0307, Omz**-0.0585, Omz**0.0743
-        Delta_Q = self.Delta_L * ((1.+self.Delta_L)**self.betan)/(1.+self.alphan*self.Delta_L) * np.exp(-f)
-        Delta_H = self.an*y**(3.*f1) / (1.+self.bn*y**f2 + (self.cn*y*f3)**(3.-self.gamman))
-        Delta_H = Delta_H / (1. + self.mun/y + self.nun/y**2)
-        pkhalo = (Delta_Q + Delta_H) * (2.*np.pi**2) / self.k**3 
+        pkhalo = _pkhalo(self.k, self.Delta_L, self.z, self.R_sigma, Omz, self.an, self.bn, self.cn, self.gamman, self.alphan, self.betan, self.mun, self.nun)
         if self.unit == 'h/Mpc':
             return pkhalo * self.cosmo.h**3
         elif self.unit == '/Mpc':
             return pkhalo
+
+    def _coeff_interps(self, k, pklintable, z):
+        R_sigma = np.empty(z.size)
+        an      = np.empty(z.size)
+        bn      = np.empty(z.size)
+        cn      = np.empty(z.size)
+        gamman  = np.empty(z.size)
+        alphan  = np.empty(z.size)
+        betan   = np.empty(z.size)
+        mun     = np.empty(z.size)
+        nun     = np.empty(z.size)
+        Omz     = np.empty(z.size)
+
+        for i in range(z.size):
+            self.set_pklin(k, pklintable[:,i], z[i])
+            self._compute_R_sigma(self.z)
+            self._compute_neff_C()
+            self._compute_coeffs(self.z)
+
+            R_sigma[i] = self.R_sigma
+            Omz[i]     = self.cosmo.Om(self.z)
+            an[i]      = self.an
+            bn[i]      = self.bn
+            cn[i]      = self.cn
+            gamman[i]  = self.gamman
+            alphan[i]  = self.alphan
+            betan[i]   = self.betan
+            mun[i]     = self.mun
+            nun[i]     = self.nun
+
+        interps = [ius(z, coeff) for coeff in [R_sigma, Omz, an, bn, cn, gamman, alphan, betan, mun, nun]]
+        return interps
+
+    def pklintable2pkhalotable(self, k, z, pklintable, dz_min=0.1):
+        di = int(dz_min/np.diff(z)[0])
+        i_sub = np.arange(0, z.size, di)
+        pklintable_sub = pklintable[:, i_sub]
+        z_sub = z[i_sub]
+        interps = self._coeff_interps(k, pklintable_sub, z_sub)
+        
+        pkhalotable = np.empty(pklintable.shape)
+        for i in range(z.size):
+            Delta_L = pklintable[:,i]*k**3/(2.*np.pi**2)
+            R_sigma = interps[0](z[i])
+            Omz     = interps[1](z[i])
+            an      = interps[2](z[i])
+            bn      = interps[3](z[i])
+            cn      = interps[4](z[i])
+            gamman  = interps[5](z[i])
+            alphan  = interps[6](z[i])
+            betan   = interps[7](z[i])
+            mun     = interps[8](z[i])
+            nun     = interps[9](z[i])
+            pkhalo = _pkhalo(k, Delta_L, z[i], R_sigma, Omz, an, bn, cn, gamman, alphan, betan, mun, nun)
+            pkhalotable[:,i] = pkhalo
+
+        return pkhalotable
+
+def _pkhalo(k, Delta_L, z, R_sigma, Omz, an, bn, cn, gamman, alphan, betan, mun, nun):
+    y = k * R_sigma
+    f = y/4. + y**2/8.
+    f1, f2, f3 = Omz**-0.0307, Omz**-0.0585, Omz**0.0743
+    Delta_Q = Delta_L * ((1.+Delta_L)**betan)/(1.+alphan*Delta_L) * np.exp(-f)
+    Delta_H = an*y**(3.*f1) / (1.+bn*y**f2 + (cn*y*f3)**(3.-gamman))
+    Delta_H = Delta_H / (1. + mun/y + nun/y**2)
+    pkhalo = (Delta_Q + Delta_H) * (2.*np.pi**2) / k**3 
+    return pkhalo
