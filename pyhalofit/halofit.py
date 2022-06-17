@@ -103,13 +103,17 @@ class halofit:
         R : float
             :math:`R` satisfying :math:`\\sigma(R)=1`.
         """
-        # init guess : [1/Mpc]   Takada & Jain (2004) fiducial model
-        k_sigma = 10.**(-1.065+4.332e-1*(1.+z)-2.516e-2*pow(1.+z,2)+9.069e-4*pow(1.+z,3))
-        
-        def eq(R):
-            return self.sigma(R) - 1.0
-        
-        self.R_sigma = abs(fsolve(eq, [1./k_sigma]))
+        if self.sigma(0.0) < 1:
+            print('Warning pyhalofit: sigma(0)<0 for z=%f. Set R_sigma=%f.'%(self.z, 0.01/self.k.max()))
+            self.R_sigma = 0.01/self.k.max()
+        else:
+            # init guess : [1/Mpc]   Takada & Jain (2004) fiducial model
+            k_sigma = 10.**(-1.065+4.332e-1*(1.+z)-2.516e-2*pow(1.+z,2)+9.069e-4*pow(1.+z,3))
+            
+            def eq(R):
+                return self.sigma(R) - 1.0
+            
+            self.R_sigma = abs(fsolve(eq, [1./k_sigma]))
     
     def _compute_neff_C(self, h=1e-4):
         lnR_0 = np.log(self.R_sigma)
